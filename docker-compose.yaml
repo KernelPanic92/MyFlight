@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+
+  api:
+    container_name: 'myflight-api' # this is the name of the container to us
+    depends_on:
+      - neo4j
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    ports:
+    - "3000:3000"
+    networks:
+      - app-network # this is a docker feature to allow you to place your various services within a virtual network so they can talk to each other. Note all the services we define here use the "app-network" network.
+  neo4j:
+    build:
+      context: ./apps/db
+      dockerfile: Dockerfile
+    container_name: 'myflight-db'
+    environment: 
+      - NEO4J_AUTH=none
+      - NEO4J_USERNAME=neo4j
+      - NEO4J_PASSWORD=s3cr3t
+    volumes:
+      - ./apps/db/scripts/data.cql:/cyphers/interviews.cql
+    ports: 
+      - "7687:7687" # bolt protocol
+      - "7474:7474" # http protocol
+      - "7473:7473" # https protocol
+    networks:
+      - app-network
+  web:
+    container_name: 'myflight-web' # this is the name of the container to us
+    depends_on:
+      - api
+    build:
+      context: ./apps/spa
+      dockerfile: Dockerfile
+    ports:
+    - "4200:4200"
+networks:
+  app-network:
+    driver: bridge

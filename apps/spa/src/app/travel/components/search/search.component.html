@@ -1,0 +1,69 @@
+
+<form class="container-fluid" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="row">
+    <mat-form-field class="col-sm-12">
+      <mat-label>Partenza</mat-label>
+      <mat-select formControlName="departure">
+        <mat-option></mat-option>
+        <mat-option *ngFor="let airport of airports" [value]="airport.code">
+          {{ airport.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('departure').hasError('required')">
+        Campo obbligatorio
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <br/>
+  <div class="row">
+    <mat-form-field class="col-sm-12">
+      <mat-label>Destinazione</mat-label>
+      <mat-select formControlName="arrival" [errorStateMatcher]="sameAirportErrorStateMatcher">
+        <mat-option></mat-option>
+        <mat-option *ngFor="let airport of airports" [value]="airport.code">
+          {{ airport.name }}
+        </mat-option>
+      </mat-select>
+
+      <mat-error *ngIf="form.get('arrival').hasError('required')">
+        Campo obbbligatorio
+      </mat-error>
+
+      <mat-error *ngIf="form.hasError('sameAirports')">
+        La partenza e la destinazione devono essere differenti
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <br/>
+  <div class="row">
+    <mat-form-field class="col-sm-12">
+      <mat-label>Scali</mat-label>
+      <mat-select formControlName="maxStepOvers">
+        <mat-option value>Quello al prezzo migliore</mat-option>
+        <mat-option value="1">
+          Nessuno
+        </mat-option>
+        <mat-option value="2">
+          Uno al massimo
+        </mat-option>
+        <mat-option value="3">
+          Due al massimo
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('departure').hasError('required')">
+        Campo obbligatorio
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <br/>
+  <div class="row">
+    <div class="col-xs-2 col-xs-offset-10">
+      <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid">Cerca</button>
+    </div>
+  </div>
+</form>
+
+
+
+
+

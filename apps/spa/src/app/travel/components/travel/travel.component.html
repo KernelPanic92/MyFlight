@@ -1,0 +1,51 @@
+<div class="container">
+  <br/>
+  <div class="row">
+    <div class="col-sm-12 col-md-6 col-md-offset-3">
+
+      <mat-card>
+        <mat-card-content>
+          <div class="container-fluid">
+            <app-search *ngIf="airports$ | async as airports;" [airports]="airports" (selectedTravel)="searchBestTravel($event)"></app-search>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+  </div>
+  <br/>
+  <br/>
+  <div class="row">
+
+    <div class="col-sm-12 col-md-6 col-md-offset-3" *ngIf="travel$ | async as travel">
+      <mat-card>
+        <mat-card-title>
+          {{ travel.departure.name }} - {{ travel.arrival.name }}
+          ({{travel.flights.length > 1 ? 'CON SCALI' : 'DIRETTO'}})
+        </mat-card-title>
+        <mat-card-subtitle> {{ travel.totalPrice }} Euro </mat-card-subtitle>
+        <mat-card-content>
+
+          <div *ngIf="travel.flights.length > 1">
+            <span *ngFor="let flight of travel.flights; let last = last">
+              {{ flight.name }} ({{ flight.price}} Euro) <br/>
+              <ng-container *ngIf="!last">
+                <mat-icon>arrow_circle_down</mat-icon> <br/>
+              </ng-container>
+
+            </span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+
+    <div class="col-sm-2 col-md-offset-5" *ngIf="loading$ | async;">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <div class="col-sm-4 col-md-offset-5" *ngIf="noTravel$ | async;">
+      <h2>Nessun volo trovato 😱</h2>
+    </div>
+  </div>
+</div>
