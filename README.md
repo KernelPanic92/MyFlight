@@ -14,6 +14,8 @@ docker-compose up --build
 
 It may take a while 😅
 
+and navigate to http://localhost:4200
+
 ## Stack
 
 *  DB: Neo4j
