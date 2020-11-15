@@ -4,6 +4,11 @@ services:
 
   api:
     container_name: 'myflight-api' # this is the name of the container to us
+    environment:
+      - DATABASE_HOST=neo4j
+      - DATABASE_PORT=7687
+      - DATABASE_USERNAME=neo4j
+      - DATABASE_PASSWORD=s3cr3t
     depends_on:
       - neo4j
     build:

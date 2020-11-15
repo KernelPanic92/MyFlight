@@ -6,11 +6,11 @@ import { TravelModule } from './travel/travel.module';
   imports: [
     Neo4jModule.forRoot({
       scheme: 'neo4j',
-      host: 'neo4j',
-      port: 7687,
-      username: 'neo4j',
-      password: 's3cr3t',
-      database: '',
+      host: process.env.DATABASE_HOST || 'localhost',
+      port: parseInt(process.env.DATABASE_PORT, 10) || 7687,
+      username: process.env.DATABASE_USERNAME || 'neo4j',
+      password: process.env.DATABASE_PASSWORD || 's3cr3t',
+      database: process.env.DATABASE_NAME || '',
     }),
     TravelModule,
   ],
